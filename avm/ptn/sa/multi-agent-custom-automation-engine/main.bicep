@@ -1358,7 +1358,7 @@ module avmStorageAccount 'br/public:avm/res/storage/storage-account:0.27.1' = {
     // WAF aligned networking
     networkAcls: {
       bypass: 'AzureServices'
-      defaultAction: enablePrivateNetworking ? 'Deny' : 'Allow'
+      defaultAction: 'Deny'
     }
     allowBlobPublicAccess: false
     publicNetworkAccess: enablePrivateNetworking ? 'Disabled' : 'Enabled'
