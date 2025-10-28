@@ -960,7 +960,7 @@ module containerAppEnvironment 'br/public:avm/res/app/managed-environment:0.11.3
       : null
     appInsightsConnectionString: enableMonitoring ? applicationInsights!.outputs.connectionString : null
     // WAF aligned configuration for Redundancy
-    zoneRedundant: enableRedundancy && enablePrivateNetworking
+    zoneRedundant: true
     infrastructureResourceGroupName: enableRedundancy ? '${resourceGroup().name}-infra' : null
     workloadProfiles: enableRedundancy
       ? [
