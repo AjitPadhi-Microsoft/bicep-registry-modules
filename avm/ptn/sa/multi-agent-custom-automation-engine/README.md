@@ -141,9 +141,9 @@ module multiAgentCustomAutomationEngine 'br/public:avm/ptn/sa/multi-agent-custom
     enablePrivateNetworking: false
     enableRedundancy: false
     enableScalability: false
-    location: '<location>'
     // Non-required parameters
     enableTelemetry: true
+    location: '<location>'
     solutionName: 'macaemin'
   }
 }
@@ -177,12 +177,12 @@ module multiAgentCustomAutomationEngine 'br/public:avm/ptn/sa/multi-agent-custom
     "enableScalability": {
       "value": false
     },
-    "location": {
-      "value": "<location>"
-    },
     // Non-required parameters
     "enableTelemetry": {
       "value": true
+    },
+    "location": {
+      "value": "<location>"
     },
     "solutionName": {
       "value": "macaemin"
@@ -207,9 +207,9 @@ param enableMonitoring = false
 param enablePrivateNetworking = false
 param enableRedundancy = false
 param enableScalability = false
-param location = '<location>'
 // Non-required parameters
 param enableTelemetry = true
+param location = '<location>'
 param solutionName = 'macaemin'
 ```
 
@@ -235,9 +235,9 @@ module multiAgentCustomAutomationEngine 'br/public:avm/ptn/sa/multi-agent-custom
     enablePrivateNetworking: true
     enableRedundancy: true
     enableScalability: true
-    location: '<location>'
     // Non-required parameters
     enableTelemetry: true
+    location: '<location>'
     solutionName: 'macaewaf'
     virtualMachineAdminPassword: '<virtualMachineAdminPassword>'
     virtualMachineAdminUsername: 'adminuser'
@@ -273,12 +273,12 @@ module multiAgentCustomAutomationEngine 'br/public:avm/ptn/sa/multi-agent-custom
     "enableScalability": {
       "value": true
     },
-    "location": {
-      "value": "<location>"
-    },
     // Non-required parameters
     "enableTelemetry": {
       "value": true
+    },
+    "location": {
+      "value": "<location>"
     },
     "solutionName": {
       "value": "macaewaf"
@@ -309,9 +309,9 @@ param enableMonitoring = true
 param enablePrivateNetworking = true
 param enableRedundancy = true
 param enableScalability = true
-param location = '<location>'
 // Non-required parameters
 param enableTelemetry = true
+param location = '<location>'
 param solutionName = 'macaewaf'
 param virtualMachineAdminPassword = '<virtualMachineAdminPassword>'
 param virtualMachineAdminUsername = 'adminuser'
@@ -346,10 +346,10 @@ param virtualMachineAdminUsername = 'adminuser'
 | [`frontendContainerImageName`](#parameter-frontendcontainerimagename) | string | The Container Image Name to deploy on the frontend. |
 | [`frontendContainerImageTag`](#parameter-frontendcontainerimagetag) | string | The Container Image Tag to deploy on the frontend. |
 | [`frontendContainerRegistryHostname`](#parameter-frontendcontainerregistryhostname) | string | The Container Registry hostname where the docker images for the frontend are located. |
-| [`gpt4_1ModelCapacity`](#parameter-gpt4_1modelcapacity) | int | AI model deployment token capacity. Defaults to 150 for optimal performance. |
-| [`gpt4_1ModelDeploymentType`](#parameter-gpt4_1modeldeploymenttype) | string | GPT model deployment type. Defaults to GlobalStandard. |
-| [`gpt4_1ModelName`](#parameter-gpt4_1modelname) | string | Name of the GPT model to deploy: |
-| [`gpt4_1ModelVersion`](#parameter-gpt4_1modelversion) | string | Version of the GPT model to deploy. Defaults to 2025-04-14. |
+| [`gpt41ModelCapacity`](#parameter-gpt41modelcapacity) | int | AI model deployment token capacity. Defaults to 150 for optimal performance. |
+| [`gpt41ModelDeploymentType`](#parameter-gpt41modeldeploymenttype) | string | GPT model deployment type. Defaults to GlobalStandard. |
+| [`gpt41ModelName`](#parameter-gpt41modelname) | string | Name of the GPT model to deploy: |
+| [`gpt41ModelVersion`](#parameter-gpt41modelversion) | string | Version of the GPT model to deploy. Defaults to 2025-04-14. |
 | [`gptModelCapacity`](#parameter-gptmodelcapacity) | int | AI model deployment token capacity. Defaults to 50 for optimal performance. |
 | [`gptModelDeploymentType`](#parameter-gptmodeldeploymenttype) | string | GPT model deployment type. Defaults to GlobalStandard. |
 | [`gptModelName`](#parameter-gptmodelname) | string | Name of the GPT model to deploy: |
@@ -358,9 +358,9 @@ param virtualMachineAdminUsername = 'adminuser'
 | [`gptReasoningModelDeploymentType`](#parameter-gptreasoningmodeldeploymenttype) | string | GPT model deployment type. Defaults to GlobalStandard. |
 | [`gptReasoningModelName`](#parameter-gptreasoningmodelname) | string | Name of the GPT Reasoning model to deploy: |
 | [`gptReasoningModelVersion`](#parameter-gptreasoningmodelversion) | string | Version of the GPT Reasoning model to deploy. Defaults to 2025-04-14. |
-| [`MCPContainerImageName`](#parameter-mcpcontainerimagename) | string | The Container Image Name to deploy on the MCP. |
-| [`MCPContainerImageTag`](#parameter-mcpcontainerimagetag) | string | The Container Image Tag to deploy on the MCP. |
-| [`MCPContainerRegistryHostname`](#parameter-mcpcontainerregistryhostname) | string | The Container Registry hostname where the docker images for the MCP are located. |
+| [`mcpContainerImageName`](#parameter-mcpcontainerimagename) | string | The Container Image Name to deploy on the MCP. |
+| [`mcpContainerImageTag`](#parameter-mcpcontainerimagetag) | string | The Container Image Tag to deploy on the MCP. |
+| [`mcpContainerRegistryHostname`](#parameter-mcpcontainerregistryhostname) | string | The Container Registry hostname where the docker images for the MCP are located. |
 | [`solutionName`](#parameter-solutionname) | string | A unique application/solution name for all resources in this deployment. This should be 3-16 characters long. |
 | [`solutionUniqueText`](#parameter-solutionuniquetext) | string | A unique text value for the solution. This is used to ensure resource names are unique for global resources. Defaults to a 5-character substring of the unique string generated from the subscription ID, resource group name, and solution name. |
 | [`tags`](#parameter-tags) | object | The tags to apply to all deployed Azure resources. |
@@ -419,8 +419,9 @@ Enable scalability for applicable resources, aligned with the Well Architected F
 
 Azure region for all services. Regions are restricted to guarantee compatibility with paired regions and replica locations for data redundancy and failover scenarios based on articles [Azure regions list](https://learn.microsoft.com/azure/reliability/regions-list) and [Azure Database for MySQL Flexible Server - Azure Regions](https://learn.microsoft.com/azure/mysql/flexible-server/overview#azure-regions).
 
-- Required: Yes
+- Required: No
 - Type: string
+- Default: `'uksouth'`
 - Allowed:
   ```Bicep
   [
@@ -507,7 +508,7 @@ The Container Registry hostname where the docker images for the frontend are loc
 - Type: string
 - Default: `'biabcontainerreg.azurecr.io'`
 
-### Parameter: `gpt4_1ModelCapacity`
+### Parameter: `gpt41ModelCapacity`
 
 AI model deployment token capacity. Defaults to 150 for optimal performance.
 
@@ -515,7 +516,7 @@ AI model deployment token capacity. Defaults to 150 for optimal performance.
 - Type: int
 - Default: `150`
 
-### Parameter: `gpt4_1ModelDeploymentType`
+### Parameter: `gpt41ModelDeploymentType`
 
 GPT model deployment type. Defaults to GlobalStandard.
 
@@ -530,7 +531,7 @@ GPT model deployment type. Defaults to GlobalStandard.
   ]
   ```
 
-### Parameter: `gpt4_1ModelName`
+### Parameter: `gpt41ModelName`
 
 Name of the GPT model to deploy:
 
@@ -538,7 +539,7 @@ Name of the GPT model to deploy:
 - Type: string
 - Default: `'gpt-4.1'`
 
-### Parameter: `gpt4_1ModelVersion`
+### Parameter: `gpt41ModelVersion`
 
 Version of the GPT model to deploy. Defaults to 2025-04-14.
 
@@ -624,7 +625,7 @@ Version of the GPT Reasoning model to deploy. Defaults to 2025-04-14.
 - Type: string
 - Default: `'2025-04-16'`
 
-### Parameter: `MCPContainerImageName`
+### Parameter: `mcpContainerImageName`
 
 The Container Image Name to deploy on the MCP.
 
@@ -632,7 +633,7 @@ The Container Image Name to deploy on the MCP.
 - Type: string
 - Default: `'macaemcp'`
 
-### Parameter: `MCPContainerImageTag`
+### Parameter: `mcpContainerImageTag`
 
 The Container Image Tag to deploy on the MCP.
 
@@ -640,7 +641,7 @@ The Container Image Tag to deploy on the MCP.
 - Type: string
 - Default: `'latest_v3'`
 
-### Parameter: `MCPContainerRegistryHostname`
+### Parameter: `mcpContainerRegistryHostname`
 
 The Container Registry hostname where the docker images for the MCP are located.
 
