@@ -960,7 +960,7 @@ module containerAppEnvironment 'br/public:avm/res/app/managed-environment:0.11.3
       : null
     appInsightsConnectionString: enableMonitoring ? applicationInsights!.outputs.connectionString : null
     // WAF aligned configuration for Redundancy
-    zoneRedundant: true
+    zoneRedundant: enableRedundancy ? true : false
     infrastructureResourceGroupName: enableRedundancy ? '${resourceGroup().name}-infra' : null
     workloadProfiles: enableRedundancy
       ? [
@@ -1009,7 +1009,7 @@ module containerApp 'br/public:avm/res/app/container-app:0.19.0' = {
     }
     // WAF aligned configuration for Scalability
     scaleSettings: {
-      maxReplicas: enableScalability ? 3 : 1
+      maxReplicas: enableScalability ? 4 : 2
       minReplicas: 2
       rules: [
         {
@@ -1198,7 +1198,7 @@ module containerAppMcp 'br/public:avm/res/app/container-app:0.19.0' = {
     }
     // WAF aligned configuration for Scalability
     scaleSettings: {
-      maxReplicas: enableScalability ? 3 : 1
+      maxReplicas: enableScalability ? 4 : 2
       minReplicas: 2
       rules: [
         {
