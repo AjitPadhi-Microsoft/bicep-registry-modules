@@ -27,7 +27,7 @@ param solutionUniqueText string = take(uniqueString(subscription().id, resourceG
   'southeastasia'
   'uksouth'
 ])
-param location string
+param location string = 'uksouth'
 
 //Get the current deployer's information
 var deployerInfo = deployer()
@@ -57,10 +57,10 @@ param gptModelVersion string = '2025-04-14'
 
 @minLength(1)
 @description('Optional. Name of the GPT model to deploy:')
-param gpt4_1ModelName string = 'gpt-4.1'
+param gpt41ModelName string = 'gpt-4.1'
 
 @description('Optional. Version of the GPT model to deploy. Defaults to 2025-04-14.')
-param gpt4_1ModelVersion string = '2025-04-14'
+param gpt41ModelVersion string = '2025-04-14'
 
 @minLength(1)
 @description('Optional. Name of the GPT Reasoning model to deploy:')
@@ -78,7 +78,7 @@ param azureopenaiVersion string = '2024-12-01-preview'
   'GlobalStandard'
 ])
 @description('Optional. GPT model deployment type. Defaults to GlobalStandard.')
-param gpt4_1ModelDeploymentType string = 'GlobalStandard'
+param gpt41ModelDeploymentType string = 'GlobalStandard'
 
 @minLength(1)
 @allowed([
@@ -100,7 +100,7 @@ param gptReasoningModelDeploymentType string = 'GlobalStandard'
 param gptModelCapacity int = 50
 
 @description('Optional. AI model deployment token capacity. Defaults to 150 for optimal performance.')
-param gpt4_1ModelCapacity int = 150
+param gpt41ModelCapacity int = 150
 
 @description('Optional. AI model deployment token capacity. Defaults to 50 for optimal performance.')
 param gptReasoningModelCapacity int = 50
@@ -147,13 +147,13 @@ param frontendContainerImageName string = 'macaefrontend'
 param frontendContainerImageTag string = 'latest_v3'
 
 @description('Optional. The Container Registry hostname where the docker images for the MCP are located.')
-param MCPContainerRegistryHostname string = 'biabcontainerreg.azurecr.io'
+param mcpContainerRegistryHostname string = 'biabcontainerreg.azurecr.io'
 
 @description('Optional. The Container Image Name to deploy on the MCP.')
-param MCPContainerImageName string = 'macaemcp'
+param mcpContainerImageName string = 'macaemcp'
 
 @description('Optional. The Container Image Tag to deploy on the MCP.')
-param MCPContainerImageTag string = 'latest_v3'
+param mcpContainerImageTag string = 'latest_v3'
 
 @description('Optional. Enable/Disable usage telemetry for module.')
 param enableTelemetry bool = true
@@ -640,7 +640,7 @@ module virtualMachine 'br/public:avm/res/compute/virtual-machine:0.20.0' = if (e
 }
 
 // ========== Private DNS Zones ========== //
-var keyVaultPrivateDNSZone = 'privatelink.${toLower(environment().name) == 'azureusgovernment' ? 'vaultcore.usgovcloudapi.net' : 'vaultcore.azure.net'}'
+var keyVaultPrivateDnsZone = 'privatelink.${toLower(environment().name) == 'azureusgovernment' ? 'vaultcore.usgovcloudapi.net' : 'vaultcore.azure.net'}'
 var privateDnsZones = [
   'privatelink.cognitiveservices.azure.com'
   'privatelink.openai.azure.com'
@@ -648,7 +648,7 @@ var privateDnsZones = [
   'privatelink.documents.azure.com'
   'privatelink.blob.core.windows.net'
   'privatelink.search.windows.net'
-  keyVaultPrivateDNSZone
+  keyVaultPrivateDnsZone
 ]
 
 // DNS Zone Index Constants
@@ -693,13 +693,13 @@ var aiFoundryAiServicesModelDeployment = {
   }
   raiPolicyName: 'Microsoft.Default'
 }
-var aiFoundryAiServices4_1ModelDeployment = {
+var aiFoundryAiServices41ModelDeployment = {
   format: 'OpenAI'
-  name: gpt4_1ModelName
-  version: gpt4_1ModelVersion
+  name: gpt41ModelName
+  version: gpt41ModelVersion
   sku: {
-    name: gpt4_1ModelDeploymentType
-    capacity: gpt4_1ModelCapacity
+    name: gpt41ModelDeploymentType
+    capacity: gpt41ModelCapacity
   }
   raiPolicyName: 'Microsoft.Default'
 }
@@ -721,6 +721,7 @@ module aiFoundryAiServices 'br:mcr.microsoft.com/bicep/avm/res/cognitive-service
     tags: tags
     sku: 'S0'
     kind: 'AIServices'
+    enableTelemetry: enableTelemetry
     disableLocalAuth: true
     allowProjectManagement: true
     customSubDomainName: aiFoundryAiServicesResourceName
@@ -742,16 +743,16 @@ module aiFoundryAiServices 'br:mcr.microsoft.com/bicep/avm/res/cognitive-service
         }
       }
       {
-        name: aiFoundryAiServices4_1ModelDeployment.name
+        name: aiFoundryAiServices41ModelDeployment.name
         model: {
-          format: aiFoundryAiServices4_1ModelDeployment.format
-          name: aiFoundryAiServices4_1ModelDeployment.name
-          version: aiFoundryAiServices4_1ModelDeployment.version
+          format: aiFoundryAiServices41ModelDeployment.format
+          name: aiFoundryAiServices41ModelDeployment.name
+          version: aiFoundryAiServices41ModelDeployment.version
         }
-        raiPolicyName: aiFoundryAiServices4_1ModelDeployment.raiPolicyName
+        raiPolicyName: aiFoundryAiServices41ModelDeployment.raiPolicyName
         sku: {
-          name: aiFoundryAiServices4_1ModelDeployment.sku.name
-          capacity: aiFoundryAiServices4_1ModelDeployment.sku.capacity
+          name: aiFoundryAiServices41ModelDeployment.sku.name
+          capacity: aiFoundryAiServices41ModelDeployment.sku.capacity
         }
       }
       {
@@ -1212,7 +1213,7 @@ module containerAppMcp 'br/public:avm/res/app/container-app:0.19.0' = {
     containers: [
       {
         name: 'mcp'
-        image: '${MCPContainerRegistryHostname}/${MCPContainerImageName}:${MCPContainerImageTag}'
+        image: '${mcpContainerRegistryHostname}/${mcpContainerImageName}:${mcpContainerImageTag}'
         resources: {
           cpu: 2
           memory: '4Gi'
@@ -1403,6 +1404,7 @@ module searchService 'br/public:avm/res/search/search-service:0.11.1' = {
   name: take('avm.res.search.search-service.${solutionSuffix}', 64)
   params: {
     name: searchServiceName
+    enableTelemetry: enableTelemetry
     authOptions: {
       aadOrApiKey: {
         aadAuthFailureMode: 'http401WithBearerChallenge'
