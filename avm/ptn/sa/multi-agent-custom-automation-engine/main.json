@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "13754125627016158838"
+      "templateHash": "6618185071048253470"
     },
     "name": "Multi-Agent Custom Automation Engine",
     "description": "This module contains the resources required to deploy the [Multi-Agent Custom Automation Engine solution accelerator](https://github.com/microsoft/Multi-Agent-Custom-Automation-Engine-Solution-Accelerator) for both Sandbox environments and WAF aligned environments.\n\n> **Note:** This module is not intended for broad, generic use, as it was designed by the Commercial Solution Areas CTO team, as a Microsoft Solution Accelerator. Feature requests and bug fix requests are welcome if they support the needs of this organization but may not be incorporated if they aim to make this module more generic than what it needs to be for its primary use case. This module will likely be updated to leverage AVM resource modules in the future. This may result in breaking changes in upcoming versions when these features are implemented.\n"
@@ -31009,7 +31009,9 @@
           "infrastructureSubnetResourceId": "[if(parameters('enablePrivateNetworking'), createObject('value', tryGet(tryGet(tryGet(if(parameters('enablePrivateNetworking'), reference('virtualNetwork'), null()), 'outputs'), 'containerSubnetResourceId'), 'value')), createObject('value', null()))]",
           "appLogsConfiguration": "[if(parameters('enableMonitoring'), createObject('value', createObject('destination', 'log-analytics', 'logAnalyticsConfiguration', createObject('customerId', reference('logAnalyticsWorkspace').outputs.logAnalyticsWorkspaceId.value, 'sharedKey', listOutputsWithSecureValues('logAnalyticsWorkspace', '2025-04-01').primarySharedKey))), createObject('value', null()))]",
           "appInsightsConnectionString": "[if(parameters('enableMonitoring'), createObject('value', reference('applicationInsights').outputs.connectionString.value), createObject('value', null()))]",
-          "zoneRedundant": "[if(parameters('enableRedundancy'), createObject('value', true()), createObject('value', false()))]",
+          "zoneRedundant": {
+            "value": "[and(parameters('enableRedundancy'), parameters('enablePrivateNetworking'))]"
+          },
           "infrastructureResourceGroupName": "[if(parameters('enableRedundancy'), createObject('value', format('{0}-infra', resourceGroup().name)), createObject('value', null()))]",
           "workloadProfiles": "[if(parameters('enableRedundancy'), createObject('value', createArray(createObject('maximumCount', 3, 'minimumCount', 3, 'name', 'CAW01', 'workloadProfileType', 'D4'))), createObject('value', createArray(createObject('name', 'Consumption', 'workloadProfileType', 'Consumption'))))]"
         },
@@ -31958,7 +31960,7 @@
           "scaleSettings": {
             "value": {
               "maxReplicas": "[if(parameters('enableScalability'), 3, 1)]",
-              "minReplicas": "[if(parameters('enableScalability'), 1, 1)]",
+              "minReplicas": 2,
               "rules": [
                 {
                   "name": "http-scaler",
@@ -33705,7 +33707,7 @@
           "scaleSettings": {
             "value": {
               "maxReplicas": "[if(parameters('enableScalability'), 3, 1)]",
-              "minReplicas": "[if(parameters('enableScalability'), 1, 1)]",
+              "minReplicas": 2,
               "rules": [
                 {
                   "name": "http-scaler",
@@ -35327,7 +35329,7 @@
           },
           "diagnosticSettings": "[if(parameters('enableMonitoring'), createObject('value', createArray(createObject('workspaceResourceId', reference('logAnalyticsWorkspace').outputs.resourceId.value))), createObject('value', null()))]",
           "skuName": "[if(or(parameters('enableScalability'), parameters('enableRedundancy')), createObject('value', 'P1v3'), createObject('value', 'B3'))]",
-          "skuCapacity": "[if(parameters('enableScalability'), createObject('value', 3), createObject('value', 1))]",
+          "skuCapacity": "[if(parameters('enableScalability'), createObject('value', 3), createObject('value', 2))]",
           "zoneRedundant": "[if(parameters('enableRedundancy'), createObject('value', true()), createObject('value', false()))]"
         },
         "template": {
@@ -44497,7 +44499,7 @@
             "value": 1
           },
           "replicaCount": {
-            "value": 1
+            "value": 3
           },
           "sku": "[if(parameters('enableScalability'), createObject('value', 'standard'), createObject('value', 'basic'))]",
           "tags": {
@@ -50401,237 +50403,6 @@
         "description": "The default url of the website to connect to the Multi-Agent Custom Automation Engine solution."
       },
       "value": "[reference('webSite').outputs.defaultHostname.value]"
-    },
-    "azureStorageBlobUrl": {
-      "type": "string",
-      "metadata": {
-        "description": "The blob service endpoint URL of the storage account."
-      },
-      "value": "[reference('avmStorageAccount').outputs.serviceEndpoints.value.blob]"
-    },
-    "azureStorageAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the storage account."
-      },
-      "value": "[variables('storageAccountName')]"
-    },
-    "azureStorageContainerName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the storage container for sample datasets."
-      },
-      "value": "[variables('storageContainerName')]"
-    },
-    "azureAiSearchEndpoint": {
-      "type": "string",
-      "metadata": {
-        "description": "The endpoint URL of the Azure AI Search service."
-      },
-      "value": "[reference('searchService').outputs.endpoint.value]"
-    },
-    "azureAiSearchName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the Azure AI Search service."
-      },
-      "value": "[reference('searchService').outputs.name.value]"
-    },
-    "azureAiSearchIndexName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the Azure AI Search index for sample datasets."
-      },
-      "value": "[variables('aiSearchIndexName')]"
-    },
-    "cosmosDbEndpoint": {
-      "type": "string",
-      "metadata": {
-        "description": "The endpoint URL of the Cosmos DB account."
-      },
-      "value": "[format('https://{0}.documents.azure.com:443/', variables('cosmosDbResourceName'))]"
-    },
-    "cosmosDbDatabase": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the Cosmos DB database."
-      },
-      "value": "[variables('cosmosDbDatabaseName')]"
-    },
-    "cosmosDbContainer": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the Cosmos DB container for memory storage."
-      },
-      "value": "[variables('cosmosDbDatabaseMemoryContainerName')]"
-    },
-    "azureOpenAiEndpoint": {
-      "type": "string",
-      "metadata": {
-        "description": "The endpoint URL of the Azure OpenAI service."
-      },
-      "value": "[format('https://{0}.openai.azure.com/', variables('aiFoundryAiServicesResourceName'))]"
-    },
-    "azureOpenAiModelName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the Azure OpenAI model."
-      },
-      "value": "[variables('aiFoundryAiServicesModelDeployment').name]"
-    },
-    "azureOpenAiDeploymentName": {
-      "type": "string",
-      "metadata": {
-        "description": "The deployment name of the Azure OpenAI model."
-      },
-      "value": "[variables('aiFoundryAiServicesModelDeployment').name]"
-    },
-    "azureOpenAiApiVersion": {
-      "type": "string",
-      "metadata": {
-        "description": "The API version for Azure OpenAI service."
-      },
-      "value": "[parameters('azureopenaiVersion')]"
-    },
-    "azureAiSubscriptionId": {
-      "type": "string",
-      "metadata": {
-        "description": "The subscription ID where Azure AI resources are deployed."
-      },
-      "value": "[subscription().subscriptionId]"
-    },
-    "azureAiResourceGroup": {
-      "type": "string",
-      "metadata": {
-        "description": "The resource group name where Azure AI resources are deployed."
-      },
-      "value": "[resourceGroup().name]"
-    },
-    "azureAiProjectName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the Azure AI Foundry project."
-      },
-      "value": "[reference('aiFoundryAiServicesProject').outputs.name.value]"
-    },
-    "azureAiModelDeploymentName": {
-      "type": "string",
-      "metadata": {
-        "description": "The deployment name of the Azure AI model."
-      },
-      "value": "[variables('aiFoundryAiServicesModelDeployment').name]"
-    },
-    "azureAiAgentModelDeploymentName": {
-      "type": "string",
-      "metadata": {
-        "description": "The deployment name of the Azure AI agent model."
-      },
-      "value": "[variables('aiFoundryAiServicesModelDeployment').name]"
-    },
-    "azureAiAgentEndpoint": {
-      "type": "string",
-      "metadata": {
-        "description": "The API endpoint URL of the Azure AI agent."
-      },
-      "value": "[reference('aiFoundryAiServicesProject').outputs.apiEndpoint.value]"
-    },
-    "appEnv": {
-      "type": "string",
-      "metadata": {
-        "description": "The application environment setting."
-      },
-      "value": "Prod"
-    },
-    "aiFoundryResourceId": {
-      "type": "string",
-      "metadata": {
-        "description": "The resource ID of the AI Foundry service."
-      },
-      "value": "[reference('aiFoundryAiServices').outputs.resourceId.value]"
-    },
-    "cosmosDbAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the Cosmos DB account."
-      },
-      "value": "[variables('cosmosDbResourceName')]"
-    },
-    "azureSearchEndpoint": {
-      "type": "string",
-      "metadata": {
-        "description": "The endpoint URL of the Azure Search service."
-      },
-      "value": "[reference('searchService').outputs.endpoint.value]"
-    },
-    "azureClientId": {
-      "type": "string",
-      "metadata": {
-        "description": "The client ID of the user-assigned managed identity."
-      },
-      "value": "[reference('userAssignedIdentity').outputs.clientId.value]"
-    },
-    "azureTenantId": {
-      "type": "string",
-      "metadata": {
-        "description": "The tenant ID of the Azure Active Directory."
-      },
-      "value": "[tenant().tenantId]"
-    },
-    "azureAiSearchConnectionName": {
-      "type": "string",
-      "metadata": {
-        "description": "The connection name for Azure AI Search in the AI Foundry project."
-      },
-      "value": "[variables('aiSearchConnectionName')]"
-    },
-    "azureCognitiveServices": {
-      "type": "string",
-      "metadata": {
-        "description": "The scope URL for Azure Cognitive Services authentication."
-      },
-      "value": "https://cognitiveservices.azure.com/.default"
-    },
-    "reasoningModelName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the reasoning model deployment."
-      },
-      "value": "[variables('aiFoundryAiServicesReasoningModelDeployment').name]"
-    },
-    "mcpServerName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the MCP (Model Context Protocol) server."
-      },
-      "value": "MacaeMcpServer"
-    },
-    "mcpServerDescription": {
-      "type": "string",
-      "metadata": {
-        "description": "The description of the MCP (Model Context Protocol) server capabilities."
-      },
-      "value": "MCP server with greeting, HR, and planning tools"
-    },
-    "supportedModels": {
-      "type": "string",
-      "metadata": {
-        "description": "The list of supported AI models in JSON format."
-      },
-      "value": "[[\"o3\",\"o4-mini\",\"gpt-4.1\",\"gpt-4.1-mini\"]"
-    },
-    "azureAiSearchApiKey": {
-      "type": "string",
-      "metadata": {
-        "description": "The API key for Azure AI Search service (placeholder for deployed key)."
-      },
-      "value": "<Deployed-Search-ApiKey>"
-    },
-    "backendUrl": {
-      "type": "string",
-      "metadata": {
-        "description": "The backend container app URL for API access."
-      },
-      "value": "[format('https://{0}', reference('containerApp').outputs.fqdn.value)]"
     }
   }
 }

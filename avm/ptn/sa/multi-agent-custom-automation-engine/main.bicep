@@ -960,7 +960,7 @@ module containerAppEnvironment 'br/public:avm/res/app/managed-environment:0.11.3
       : null
     appInsightsConnectionString: enableMonitoring ? applicationInsights!.outputs.connectionString : null
     // WAF aligned configuration for Redundancy
-    zoneRedundant: enableRedundancy ? true : false
+    zoneRedundant: enableRedundancy && enablePrivateNetworking
     infrastructureResourceGroupName: enableRedundancy ? '${resourceGroup().name}-infra' : null
     workloadProfiles: enableRedundancy
       ? [
@@ -1010,7 +1010,7 @@ module containerApp 'br/public:avm/res/app/container-app:0.19.0' = {
     // WAF aligned configuration for Scalability
     scaleSettings: {
       maxReplicas: enableScalability ? 3 : 1
-      minReplicas: enableScalability ? 1 : 1
+      minReplicas: 2
       rules: [
         {
           name: 'http-scaler'
@@ -1199,7 +1199,7 @@ module containerAppMcp 'br/public:avm/res/app/container-app:0.19.0' = {
     // WAF aligned configuration for Scalability
     scaleSettings: {
       maxReplicas: enableScalability ? 3 : 1
-      minReplicas: enableScalability ? 1 : 1
+      minReplicas: 2
       rules: [
         {
           name: 'http-scaler'
@@ -1285,7 +1285,7 @@ module webServerFarm 'br/public:avm/res/web/serverfarm:0.5.0' = {
     diagnosticSettings: enableMonitoring ? [{ workspaceResourceId: logAnalyticsWorkspace!.outputs.resourceId }] : null
     // WAF aligned configuration for Scalability
     skuName: enableScalability || enableRedundancy ? 'P1v3' : 'B3'
-    skuCapacity: enableScalability ? 3 : 1
+    skuCapacity: enableScalability ? 3 : 2
     // WAF aligned configuration for Redundancy
     zoneRedundant: enableRedundancy ? true : false
   }
@@ -1421,7 +1421,7 @@ module searchService 'br/public:avm/res/search/search-service:0.11.1' = {
       bypass: 'AzureServices'
     }
     partitionCount: 1
-    replicaCount: 1
+    replicaCount: 3
     sku: enableScalability ? 'standard' : 'basic'
     tags: tags
     roleAssignments: [
@@ -1529,102 +1529,3 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The default url of the website to connect to the Multi-Agent Custom Automation Engine solution.')
 output webSiteDefaultHostname string = webSite.outputs.defaultHostname
-
-@description('The blob service endpoint URL of the storage account.')
-output azureStorageBlobUrl string = avmStorageAccount.outputs.serviceEndpoints.blob
-
-@description('The name of the storage account.')
-output azureStorageAccountName string = storageAccountName
-
-@description('The name of the storage container for sample datasets.')
-output azureStorageContainerName string = storageContainerName
-
-@description('The endpoint URL of the Azure AI Search service.')
-output azureAiSearchEndpoint string = searchService.outputs.endpoint
-
-@description('The name of the Azure AI Search service.')
-output azureAiSearchName string = searchService.outputs.name
-
-@description('The name of the Azure AI Search index for sample datasets.')
-output azureAiSearchIndexName string = aiSearchIndexName
-
-@description('The endpoint URL of the Cosmos DB account.')
-output cosmosDbEndpoint string = 'https://${cosmosDbResourceName}.documents.azure.com:443/'
-
-@description('The name of the Cosmos DB database.')
-output cosmosDbDatabase string = cosmosDbDatabaseName
-
-@description('The name of the Cosmos DB container for memory storage.')
-output cosmosDbContainer string = cosmosDbDatabaseMemoryContainerName
-
-@description('The endpoint URL of the Azure OpenAI service.')
-output azureOpenAiEndpoint string = 'https://${aiFoundryAiServicesResourceName}.openai.azure.com/'
-
-@description('The name of the Azure OpenAI model.')
-output azureOpenAiModelName string = aiFoundryAiServicesModelDeployment.name
-
-@description('The deployment name of the Azure OpenAI model.')
-output azureOpenAiDeploymentName string = aiFoundryAiServicesModelDeployment.name
-
-@description('The API version for Azure OpenAI service.')
-output azureOpenAiApiVersion string = azureopenaiVersion
-
-@description('The subscription ID where Azure AI resources are deployed.')
-output azureAiSubscriptionId string = subscription().subscriptionId
-
-@description('The resource group name where Azure AI resources are deployed.')
-output azureAiResourceGroup string = resourceGroup().name
-
-@description('The name of the Azure AI Foundry project.')
-output azureAiProjectName string = aiFoundryAiServicesProject!.outputs.name
-
-@description('The deployment name of the Azure AI model.')
-output azureAiModelDeploymentName string = aiFoundryAiServicesModelDeployment.name
-
-@description('The deployment name of the Azure AI agent model.')
-output azureAiAgentModelDeploymentName string = aiFoundryAiServicesModelDeployment.name
-
-@description('The API endpoint URL of the Azure AI agent.')
-output azureAiAgentEndpoint string = aiFoundryAiServicesProject!.outputs.apiEndpoint
-
-@description('The application environment setting.')
-output appEnv string = 'Prod'
-
-@description('The resource ID of the AI Foundry service.')
-output aiFoundryResourceId string = aiFoundryAiServices.outputs.resourceId
-
-@description('The name of the Cosmos DB account.')
-output cosmosDbAccountName string = cosmosDbResourceName
-
-@description('The endpoint URL of the Azure Search service.')
-output azureSearchEndpoint string = searchService.outputs.endpoint
-
-@description('The client ID of the user-assigned managed identity.')
-output azureClientId string = userAssignedIdentity!.outputs.clientId
-
-@description('The tenant ID of the Azure Active Directory.')
-output azureTenantId string = tenant().tenantId
-
-@description('The connection name for Azure AI Search in the AI Foundry project.')
-output azureAiSearchConnectionName string = aiSearchConnectionName
-
-@description('The scope URL for Azure Cognitive Services authentication.')
-output azureCognitiveServices string = 'https://cognitiveservices.azure.com/.default'
-
-@description('The name of the reasoning model deployment.')
-output reasoningModelName string = aiFoundryAiServicesReasoningModelDeployment.name
-
-@description('The name of the MCP (Model Context Protocol) server.')
-output mcpServerName string = 'MacaeMcpServer'
-
-@description('The description of the MCP (Model Context Protocol) server capabilities.')
-output mcpServerDescription string = 'MCP server with greeting, HR, and planning tools'
-
-@description('The list of supported AI models in JSON format.')
-output supportedModels string = '["o3","o4-mini","gpt-4.1","gpt-4.1-mini"]'
-
-@description('The API key for Azure AI Search service (placeholder for deployed key).')
-output azureAiSearchApiKey string = '<Deployed-Search-ApiKey>'
-
-@description('The backend container app URL for API access.')
-output backendUrl string = 'https://${containerApp.outputs.fqdn}'
