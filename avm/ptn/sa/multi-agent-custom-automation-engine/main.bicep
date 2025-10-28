@@ -27,7 +27,8 @@ param solutionUniqueText string = take(uniqueString(subscription().id, resourceG
   'southeastasia'
   'uksouth'
 ])
-param location string = 'uksouth'
+param azurelocation string = 'uksouth'
+var location = empty(azurelocation) ? resourceGroup().location : azurelocation
 
 //Get the current deployer's information
 var deployerInfo = deployer()
