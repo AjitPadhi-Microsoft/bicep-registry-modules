@@ -16,7 +16,7 @@ param solutionName string = 'macae'
 param solutionUniqueText string = take(uniqueString(subscription().id, resourceGroup().name, solutionName), 5)
 
 @metadata({ azd: { type: 'location' } })
-@description('Required. Azure region for all services. Regions are restricted to guarantee compatibility with paired regions and replica locations for data redundancy and failover scenarios based on articles [Azure regions list](https://learn.microsoft.com/azure/reliability/regions-list) and [Azure Database for MySQL Flexible Server - Azure Regions](https://learn.microsoft.com/azure/mysql/flexible-server/overview#azure-regions).')
+@description('Optional. Azure region for all services. Regions are restricted to guarantee compatibility with paired regions and replica locations for data redundancy and failover scenarios based on articles [Azure regions list](https://learn.microsoft.com/azure/reliability/regions-list) and [Azure Database for MySQL Flexible Server - Azure Regions](https://learn.microsoft.com/azure/mysql/flexible-server/overview#azure-regions).')
 @allowed([
   'australiaeast'
   'centralus'
@@ -49,21 +49,21 @@ var deployingUserPrincipalId = deployerInfo.objectId
 param azureAiServiceLocation string
 
 @minLength(1)
-@description('Optional. Name of the GPT model to deploy:')
+@description('Optional. Name of the GPT model to deploy.')
 param gptModelName string = 'gpt-4.1-mini'
 
 @description('Optional. Version of the GPT model to deploy. Defaults to 2025-04-14.')
 param gptModelVersion string = '2025-04-14'
 
 @minLength(1)
-@description('Optional. Name of the GPT model to deploy:')
+@description('Optional. Name of the GPT model to deploy.')
 param gpt41ModelName string = 'gpt-4.1'
 
 @description('Optional. Version of the GPT model to deploy. Defaults to 2025-04-14.')
 param gpt41ModelVersion string = '2025-04-14'
 
 @minLength(1)
-@description('Optional. Name of the GPT Reasoning model to deploy:')
+@description('Optional. Name of the GPT Reasoning model to deploy.')
 param gptReasoningModelName string = 'o4-mini'
 
 @description('Optional. Version of the GPT Reasoning model to deploy. Defaults to 2025-04-14.')
@@ -213,7 +213,7 @@ var allTags = union(
   },
   tags
 )
-@description('Optional. Tag, Created by user name')
+@description('Optional. Tag, Created by user name.')
 param createdBy string = contains(deployer(), 'userPrincipalName')
   ? split(deployer().userPrincipalName, '@')[0]
   : deployer().objectId
@@ -1530,100 +1530,100 @@ output resourceGroupName string = resourceGroup().name
 output webSiteDefaultHostname string = webSite.outputs.defaultHostname
 
 @description('The blob service endpoint URL of the storage account.')
-output AZURE_STORAGE_BLOB_URL string = avmStorageAccount.outputs.serviceEndpoints.blob
+output azureStorageBlobUrl string = avmStorageAccount.outputs.serviceEndpoints.blob
 
 @description('The name of the storage account.')
-output AZURE_STORAGE_ACCOUNT_NAME string = storageAccountName
+output azureStorageAccountName string = storageAccountName
 
 @description('The name of the storage container for sample datasets.')
-output AZURE_STORAGE_CONTAINER_NAME string = storageContainerName
+output azureStorageContainerName string = storageContainerName
 
 @description('The endpoint URL of the Azure AI Search service.')
-output AZURE_AI_SEARCH_ENDPOINT string = searchService.outputs.endpoint
+output azureAiSearchEndpoint string = searchService.outputs.endpoint
 
 @description('The name of the Azure AI Search service.')
-output AZURE_AI_SEARCH_NAME string = searchService.outputs.name
+output azureAiSearchName string = searchService.outputs.name
 
 @description('The name of the Azure AI Search index for sample datasets.')
-output AZURE_AI_SEARCH_INDEX_NAME string = aiSearchIndexName
+output azureAiSearchIndexName string = aiSearchIndexName
 
 @description('The endpoint URL of the Cosmos DB account.')
-output COSMOSDB_ENDPOINT string = 'https://${cosmosDbResourceName}.documents.azure.com:443/'
+output cosmosDbEndpoint string = 'https://${cosmosDbResourceName}.documents.azure.com:443/'
 
 @description('The name of the Cosmos DB database.')
-output COSMOSDB_DATABASE string = cosmosDbDatabaseName
+output cosmosDbDatabase string = cosmosDbDatabaseName
 
 @description('The name of the Cosmos DB container for memory storage.')
-output COSMOSDB_CONTAINER string = cosmosDbDatabaseMemoryContainerName
+output cosmosDbContainer string = cosmosDbDatabaseMemoryContainerName
 
 @description('The endpoint URL of the Azure OpenAI service.')
-output AZURE_OPENAI_ENDPOINT string = 'https://${aiFoundryAiServicesResourceName}.openai.azure.com/'
+output azureOpenAiEndpoint string = 'https://${aiFoundryAiServicesResourceName}.openai.azure.com/'
 
 @description('The name of the Azure OpenAI model.')
-output AZURE_OPENAI_MODEL_NAME string = aiFoundryAiServicesModelDeployment.name
+output azureOpenAiModelName string = aiFoundryAiServicesModelDeployment.name
 
 @description('The deployment name of the Azure OpenAI model.')
-output AZURE_OPENAI_DEPLOYMENT_NAME string = aiFoundryAiServicesModelDeployment.name
+output azureOpenAiDeploymentName string = aiFoundryAiServicesModelDeployment.name
 
 @description('The API version for Azure OpenAI service.')
-output AZURE_OPENAI_API_VERSION string = azureopenaiVersion
+output azureOpenAiApiVersion string = azureopenaiVersion
 
 @description('The subscription ID where Azure AI resources are deployed.')
-output AZURE_AI_SUBSCRIPTION_ID string = subscription().subscriptionId
+output azureAiSubscriptionId string = subscription().subscriptionId
 
 @description('The resource group name where Azure AI resources are deployed.')
-output AZURE_AI_RESOURCE_GROUP string = resourceGroup().name
+output azureAiResourceGroup string = resourceGroup().name
 
 @description('The name of the Azure AI Foundry project.')
-output AZURE_AI_PROJECT_NAME string = aiFoundryAiServicesProject!.outputs.name
+output azureAiProjectName string = aiFoundryAiServicesProject!.outputs.name
 
 @description('The deployment name of the Azure AI model.')
-output AZURE_AI_MODEL_DEPLOYMENT_NAME string = aiFoundryAiServicesModelDeployment.name
+output azureAiModelDeploymentName string = aiFoundryAiServicesModelDeployment.name
 
 @description('The deployment name of the Azure AI agent model.')
-output AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME string = aiFoundryAiServicesModelDeployment.name
+output azureAiAgentModelDeploymentName string = aiFoundryAiServicesModelDeployment.name
 
 @description('The API endpoint URL of the Azure AI agent.')
-output AZURE_AI_AGENT_ENDPOINT string = aiFoundryAiServicesProject!.outputs.apiEndpoint
+output azureAiAgentEndpoint string = aiFoundryAiServicesProject!.outputs.apiEndpoint
 
 @description('The application environment setting.')
-output APP_ENV string = 'Prod'
+output appEnv string = 'Prod'
 
 @description('The resource ID of the AI Foundry service.')
-output AI_FOUNDRY_RESOURCE_ID string = aiFoundryAiServices.outputs.resourceId
+output aiFoundryResourceId string = aiFoundryAiServices.outputs.resourceId
 
 @description('The name of the Cosmos DB account.')
-output COSMOSDB_ACCOUNT_NAME string = cosmosDbResourceName
+output cosmosDbAccountName string = cosmosDbResourceName
 
 @description('The endpoint URL of the Azure Search service.')
-output AZURE_SEARCH_ENDPOINT string = searchService.outputs.endpoint
+output azureSearchEndpoint string = searchService.outputs.endpoint
 
 @description('The client ID of the user-assigned managed identity.')
-output AZURE_CLIENT_ID string = userAssignedIdentity!.outputs.clientId
+output azureClientId string = userAssignedIdentity!.outputs.clientId
 
 @description('The tenant ID of the Azure Active Directory.')
-output AZURE_TENANT_ID string = tenant().tenantId
+output azureTenantId string = tenant().tenantId
 
 @description('The connection name for Azure AI Search in the AI Foundry project.')
-output AZURE_AI_SEARCH_CONNECTION_NAME string = aiSearchConnectionName
+output azureAiSearchConnectionName string = aiSearchConnectionName
 
 @description('The scope URL for Azure Cognitive Services authentication.')
-output AZURE_COGNITIVE_SERVICES string = 'https://cognitiveservices.azure.com/.default'
+output azureCognitiveServices string = 'https://cognitiveservices.azure.com/.default'
 
 @description('The name of the reasoning model deployment.')
-output REASONING_MODEL_NAME string = aiFoundryAiServicesReasoningModelDeployment.name
+output reasoningModelName string = aiFoundryAiServicesReasoningModelDeployment.name
 
 @description('The name of the MCP (Model Context Protocol) server.')
-output MCP_SERVER_NAME string = 'MacaeMcpServer'
+output mcpServerName string = 'MacaeMcpServer'
 
 @description('The description of the MCP (Model Context Protocol) server capabilities.')
-output MCP_SERVER_DESCRIPTION string = 'MCP server with greeting, HR, and planning tools'
+output mcpServerDescription string = 'MCP server with greeting, HR, and planning tools'
 
 @description('The list of supported AI models in JSON format.')
-output SUPPORTED_MODELS string = '["o3","o4-mini","gpt-4.1","gpt-4.1-mini"]'
+output supportedModels string = '["o3","o4-mini","gpt-4.1","gpt-4.1-mini"]'
 
 @description('The API key for Azure AI Search service (placeholder for deployed key).')
-output AZURE_AI_SEARCH_API_KEY string = '<Deployed-Search-ApiKey>'
+output azureAiSearchApiKey string = '<Deployed-Search-ApiKey>'
 
 @description('The backend container app URL for API access.')
-output BACKEND_URL string = 'https://${containerApp.outputs.fqdn}'
+output backendUrl string = 'https://${containerApp.outputs.fqdn}'

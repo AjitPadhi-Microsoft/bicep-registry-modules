@@ -331,7 +331,6 @@ param virtualMachineAdminUsername = 'adminuser'
 | [`enablePrivateNetworking`](#parameter-enableprivatenetworking) | bool | Enable private networking for applicable resources, aligned with the Well Architected Framework recommendations. Defaults to false. |
 | [`enableRedundancy`](#parameter-enableredundancy) | bool | Enable redundancy for applicable resources, aligned with the Well Architected Framework recommendations. Defaults to false. |
 | [`enableScalability`](#parameter-enablescalability) | bool | Enable scalability for applicable resources, aligned with the Well Architected Framework recommendations. Defaults to false. |
-| [`location`](#parameter-location) | string | Azure region for all services. Regions are restricted to guarantee compatibility with paired regions and replica locations for data redundancy and failover scenarios based on articles [Azure regions list](https://learn.microsoft.com/azure/reliability/regions-list) and [Azure Database for MySQL Flexible Server - Azure Regions](https://learn.microsoft.com/azure/mysql/flexible-server/overview#azure-regions). |
 
 **Optional parameters**
 
@@ -341,23 +340,24 @@ param virtualMachineAdminUsername = 'adminuser'
 | [`backendContainerImageName`](#parameter-backendcontainerimagename) | string | The Container Image Name to deploy on the backend. |
 | [`backendContainerImageTag`](#parameter-backendcontainerimagetag) | string | The Container Image Tag to deploy on the backend. |
 | [`backendContainerRegistryHostname`](#parameter-backendcontainerregistryhostname) | string | The Container Registry hostname where the docker images for the backend are located. |
-| [`createdBy`](#parameter-createdby) | string | Tag, Created by user name |
+| [`createdBy`](#parameter-createdby) | string | Tag, Created by user name. |
 | [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`frontendContainerImageName`](#parameter-frontendcontainerimagename) | string | The Container Image Name to deploy on the frontend. |
 | [`frontendContainerImageTag`](#parameter-frontendcontainerimagetag) | string | The Container Image Tag to deploy on the frontend. |
 | [`frontendContainerRegistryHostname`](#parameter-frontendcontainerregistryhostname) | string | The Container Registry hostname where the docker images for the frontend are located. |
 | [`gpt41ModelCapacity`](#parameter-gpt41modelcapacity) | int | AI model deployment token capacity. Defaults to 150 for optimal performance. |
 | [`gpt41ModelDeploymentType`](#parameter-gpt41modeldeploymenttype) | string | GPT model deployment type. Defaults to GlobalStandard. |
-| [`gpt41ModelName`](#parameter-gpt41modelname) | string | Name of the GPT model to deploy: |
+| [`gpt41ModelName`](#parameter-gpt41modelname) | string | Name of the GPT model to deploy. |
 | [`gpt41ModelVersion`](#parameter-gpt41modelversion) | string | Version of the GPT model to deploy. Defaults to 2025-04-14. |
 | [`gptModelCapacity`](#parameter-gptmodelcapacity) | int | AI model deployment token capacity. Defaults to 50 for optimal performance. |
 | [`gptModelDeploymentType`](#parameter-gptmodeldeploymenttype) | string | GPT model deployment type. Defaults to GlobalStandard. |
-| [`gptModelName`](#parameter-gptmodelname) | string | Name of the GPT model to deploy: |
+| [`gptModelName`](#parameter-gptmodelname) | string | Name of the GPT model to deploy. |
 | [`gptModelVersion`](#parameter-gptmodelversion) | string | Version of the GPT model to deploy. Defaults to 2025-04-14. |
 | [`gptReasoningModelCapacity`](#parameter-gptreasoningmodelcapacity) | int | AI model deployment token capacity. Defaults to 50 for optimal performance. |
 | [`gptReasoningModelDeploymentType`](#parameter-gptreasoningmodeldeploymenttype) | string | GPT model deployment type. Defaults to GlobalStandard. |
-| [`gptReasoningModelName`](#parameter-gptreasoningmodelname) | string | Name of the GPT Reasoning model to deploy: |
+| [`gptReasoningModelName`](#parameter-gptreasoningmodelname) | string | Name of the GPT Reasoning model to deploy. |
 | [`gptReasoningModelVersion`](#parameter-gptreasoningmodelversion) | string | Version of the GPT Reasoning model to deploy. Defaults to 2025-04-14. |
+| [`location`](#parameter-location) | string | Azure region for all services. Regions are restricted to guarantee compatibility with paired regions and replica locations for data redundancy and failover scenarios based on articles [Azure regions list](https://learn.microsoft.com/azure/reliability/regions-list) and [Azure Database for MySQL Flexible Server - Azure Regions](https://learn.microsoft.com/azure/mysql/flexible-server/overview#azure-regions). |
 | [`mcpContainerImageName`](#parameter-mcpcontainerimagename) | string | The Container Image Name to deploy on the MCP. |
 | [`mcpContainerImageTag`](#parameter-mcpcontainerimagetag) | string | The Container Image Tag to deploy on the MCP. |
 | [`mcpContainerRegistryHostname`](#parameter-mcpcontainerregistryhostname) | string | The Container Registry hostname where the docker images for the MCP are located. |
@@ -415,27 +415,6 @@ Enable scalability for applicable resources, aligned with the Well Architected F
 - Required: Yes
 - Type: bool
 
-### Parameter: `location`
-
-Azure region for all services. Regions are restricted to guarantee compatibility with paired regions and replica locations for data redundancy and failover scenarios based on articles [Azure regions list](https://learn.microsoft.com/azure/reliability/regions-list) and [Azure Database for MySQL Flexible Server - Azure Regions](https://learn.microsoft.com/azure/mysql/flexible-server/overview#azure-regions).
-
-- Required: No
-- Type: string
-- Default: `'uksouth'`
-- Allowed:
-  ```Bicep
-  [
-    'australiaeast'
-    'centralus'
-    'eastasia'
-    'eastus2'
-    'japaneast'
-    'northeurope'
-    'southeastasia'
-    'uksouth'
-  ]
-  ```
-
 ### Parameter: `azureopenaiVersion`
 
 Version of the Azure OpenAI service to deploy. Defaults to 2025-01-01-preview.
@@ -470,7 +449,7 @@ The Container Registry hostname where the docker images for the backend are loca
 
 ### Parameter: `createdBy`
 
-Tag, Created by user name
+Tag, Created by user name.
 
 - Required: No
 - Type: string
@@ -533,7 +512,7 @@ GPT model deployment type. Defaults to GlobalStandard.
 
 ### Parameter: `gpt41ModelName`
 
-Name of the GPT model to deploy:
+Name of the GPT model to deploy.
 
 - Required: No
 - Type: string
@@ -572,7 +551,7 @@ GPT model deployment type. Defaults to GlobalStandard.
 
 ### Parameter: `gptModelName`
 
-Name of the GPT model to deploy:
+Name of the GPT model to deploy.
 
 - Required: No
 - Type: string
@@ -611,7 +590,7 @@ GPT model deployment type. Defaults to GlobalStandard.
 
 ### Parameter: `gptReasoningModelName`
 
-Name of the GPT Reasoning model to deploy:
+Name of the GPT Reasoning model to deploy.
 
 - Required: No
 - Type: string
@@ -624,6 +603,27 @@ Version of the GPT Reasoning model to deploy. Defaults to 2025-04-14.
 - Required: No
 - Type: string
 - Default: `'2025-04-16'`
+
+### Parameter: `location`
+
+Azure region for all services. Regions are restricted to guarantee compatibility with paired regions and replica locations for data redundancy and failover scenarios based on articles [Azure regions list](https://learn.microsoft.com/azure/reliability/regions-list) and [Azure Database for MySQL Flexible Server - Azure Regions](https://learn.microsoft.com/azure/mysql/flexible-server/overview#azure-regions).
+
+- Required: No
+- Type: string
+- Default: `'uksouth'`
+- Allowed:
+  ```Bicep
+  [
+    'australiaeast'
+    'centralus'
+    'eastasia'
+    'eastus2'
+    'japaneast'
+    'northeurope'
+    'southeastasia'
+    'uksouth'
+  ]
+  ```
 
 ### Parameter: `mcpContainerImageName`
 
@@ -693,40 +693,40 @@ The user name for the administrator account of the virtual machine. Allows to cu
 
 | Output | Type | Description |
 | :-- | :-- | :-- |
-| `AI_FOUNDRY_RESOURCE_ID` | string | The resource ID of the AI Foundry service. |
-| `APP_ENV` | string | The application environment setting. |
-| `AZURE_AI_AGENT_ENDPOINT` | string | The API endpoint URL of the Azure AI agent. |
-| `AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME` | string | The deployment name of the Azure AI agent model. |
-| `AZURE_AI_MODEL_DEPLOYMENT_NAME` | string | The deployment name of the Azure AI model. |
-| `AZURE_AI_PROJECT_NAME` | string | The name of the Azure AI Foundry project. |
-| `AZURE_AI_RESOURCE_GROUP` | string | The resource group name where Azure AI resources are deployed. |
-| `AZURE_AI_SEARCH_API_KEY` | string | The API key for Azure AI Search service (placeholder for deployed key). |
-| `AZURE_AI_SEARCH_CONNECTION_NAME` | string | The connection name for Azure AI Search in the AI Foundry project. |
-| `AZURE_AI_SEARCH_ENDPOINT` | string | The endpoint URL of the Azure AI Search service. |
-| `AZURE_AI_SEARCH_INDEX_NAME` | string | The name of the Azure AI Search index for sample datasets. |
-| `AZURE_AI_SEARCH_NAME` | string | The name of the Azure AI Search service. |
-| `AZURE_AI_SUBSCRIPTION_ID` | string | The subscription ID where Azure AI resources are deployed. |
-| `AZURE_CLIENT_ID` | string | The client ID of the user-assigned managed identity. |
-| `AZURE_COGNITIVE_SERVICES` | string | The scope URL for Azure Cognitive Services authentication. |
-| `AZURE_OPENAI_API_VERSION` | string | The API version for Azure OpenAI service. |
-| `AZURE_OPENAI_DEPLOYMENT_NAME` | string | The deployment name of the Azure OpenAI model. |
-| `AZURE_OPENAI_ENDPOINT` | string | The endpoint URL of the Azure OpenAI service. |
-| `AZURE_OPENAI_MODEL_NAME` | string | The name of the Azure OpenAI model. |
-| `AZURE_SEARCH_ENDPOINT` | string | The endpoint URL of the Azure Search service. |
-| `AZURE_STORAGE_ACCOUNT_NAME` | string | The name of the storage account. |
-| `AZURE_STORAGE_BLOB_URL` | string | The blob service endpoint URL of the storage account. |
-| `AZURE_STORAGE_CONTAINER_NAME` | string | The name of the storage container for sample datasets. |
-| `AZURE_TENANT_ID` | string | The tenant ID of the Azure Active Directory. |
-| `BACKEND_URL` | string | The backend container app URL for API access. |
-| `COSMOSDB_ACCOUNT_NAME` | string | The name of the Cosmos DB account. |
-| `COSMOSDB_CONTAINER` | string | The name of the Cosmos DB container for memory storage. |
-| `COSMOSDB_DATABASE` | string | The name of the Cosmos DB database. |
-| `COSMOSDB_ENDPOINT` | string | The endpoint URL of the Cosmos DB account. |
-| `MCP_SERVER_DESCRIPTION` | string | The description of the MCP (Model Context Protocol) server capabilities. |
-| `MCP_SERVER_NAME` | string | The name of the MCP (Model Context Protocol) server. |
-| `REASONING_MODEL_NAME` | string | The name of the reasoning model deployment. |
+| `aiFoundryResourceId` | string | The resource ID of the AI Foundry service. |
+| `appEnv` | string | The application environment setting. |
+| `azureAiAgentEndpoint` | string | The API endpoint URL of the Azure AI agent. |
+| `azureAiAgentModelDeploymentName` | string | The deployment name of the Azure AI agent model. |
+| `azureAiModelDeploymentName` | string | The deployment name of the Azure AI model. |
+| `azureAiProjectName` | string | The name of the Azure AI Foundry project. |
+| `azureAiResourceGroup` | string | The resource group name where Azure AI resources are deployed. |
+| `azureAiSearchApiKey` | string | The API key for Azure AI Search service (placeholder for deployed key). |
+| `azureAiSearchConnectionName` | string | The connection name for Azure AI Search in the AI Foundry project. |
+| `azureAiSearchEndpoint` | string | The endpoint URL of the Azure AI Search service. |
+| `azureAiSearchIndexName` | string | The name of the Azure AI Search index for sample datasets. |
+| `azureAiSearchName` | string | The name of the Azure AI Search service. |
+| `azureAiSubscriptionId` | string | The subscription ID where Azure AI resources are deployed. |
+| `azureClientId` | string | The client ID of the user-assigned managed identity. |
+| `azureCognitiveServices` | string | The scope URL for Azure Cognitive Services authentication. |
+| `azureOpenAiApiVersion` | string | The API version for Azure OpenAI service. |
+| `azureOpenAiDeploymentName` | string | The deployment name of the Azure OpenAI model. |
+| `azureOpenAiEndpoint` | string | The endpoint URL of the Azure OpenAI service. |
+| `azureOpenAiModelName` | string | The name of the Azure OpenAI model. |
+| `azureSearchEndpoint` | string | The endpoint URL of the Azure Search service. |
+| `azureStorageAccountName` | string | The name of the storage account. |
+| `azureStorageBlobUrl` | string | The blob service endpoint URL of the storage account. |
+| `azureStorageContainerName` | string | The name of the storage container for sample datasets. |
+| `azureTenantId` | string | The tenant ID of the Azure Active Directory. |
+| `backendUrl` | string | The backend container app URL for API access. |
+| `cosmosDbAccountName` | string | The name of the Cosmos DB account. |
+| `cosmosDbContainer` | string | The name of the Cosmos DB container for memory storage. |
+| `cosmosDbDatabase` | string | The name of the Cosmos DB database. |
+| `cosmosDbEndpoint` | string | The endpoint URL of the Cosmos DB account. |
+| `mcpServerDescription` | string | The description of the MCP (Model Context Protocol) server capabilities. |
+| `mcpServerName` | string | The name of the MCP (Model Context Protocol) server. |
+| `reasoningModelName` | string | The name of the reasoning model deployment. |
 | `resourceGroupName` | string | The resource group the resources were deployed into. |
-| `SUPPORTED_MODELS` | string | The list of supported AI models in JSON format. |
+| `supportedModels` | string | The list of supported AI models in JSON format. |
 | `webSiteDefaultHostname` | string | The default url of the website to connect to the Multi-Agent Custom Automation Engine solution. |
 
 ## Cross-referenced modules
