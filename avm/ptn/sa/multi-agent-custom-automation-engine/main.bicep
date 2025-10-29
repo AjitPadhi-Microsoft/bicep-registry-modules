@@ -123,11 +123,11 @@ param enablePrivateNetworking bool
 
 @secure()
 @description('Optional. The user name for the administrator account of the virtual machine. Allows to customize credentials if `enablePrivateNetworking` is set to true.')
-param virtualMachineAdminUsername string = take(newGuid(), 20)
+param virtualMachineAdminUsername string = ''
 
 @description('Optional. The password for the administrator account of the virtual machine. Allows to customize credentials if `enablePrivateNetworking` is set to true.')
 @secure()
-param virtualMachineAdminPassword string = newGuid()
+param virtualMachineAdminPassword string = ''
 
 @description('Optional. The Container Registry hostname where the docker images for the backend are located.')
 param backendContainerRegistryHostname string = 'biabcontainerreg.azurecr.io'
@@ -558,8 +558,8 @@ module virtualMachine 'br/public:avm/res/compute/virtual-machine:0.20.0' = if (e
     computerName: take(virtualMachineResourceName, 15)
     osType: 'Windows'
     vmSize: virtualMachineSize
-    adminUsername: virtualMachineAdminUsername
-    adminPassword: virtualMachineAdminPassword
+    adminUsername: empty(virtualMachineAdminUsername) ? 'JumpboxAdminUser' : virtualMachineAdminUsername
+    adminPassword: empty(virtualMachineAdminPassword) ? 'JumpboxAdminP@ssw0rd1234!' : virtualMachineAdminPassword
     patchMode: 'AutomaticByPlatform'
     bypassPlatformSafetyChecksOnUserSchedule: true
     maintenanceConfigurationResourceId: maintenanceConfiguration!.outputs.resourceId
